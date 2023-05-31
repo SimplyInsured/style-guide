@@ -41,6 +41,9 @@ The secondary category is `components`.  These are generally visual components s
 
 Every other file, from sagas to redux files to helpers, should all go into the main root folder.
 
+### Visual Representation
+![Untitled Diagram-Abstract Layer drawio](https://github.com/SimplyInsured/style-guide/assets/5034574/eaf0b8e0-4cb3-4f72-a275-24ea008e5da8)
+
 ## File Naming
 
 The main `App` file, all Pages and Components should be `PascalCase`
