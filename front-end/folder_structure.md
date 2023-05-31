@@ -81,6 +81,10 @@ The secondary category is `components`.  These are generally visual components s
 |       |-- QuoteInformationPanel.js
 ```
 
+**Tips**
+
+- Try not to create nested Component files too deep.  Ideally, no levels beyond your component file.  Ok to go one level beyond.  Two levels most likely means you went too far.
+
 ### Everything Else
 
 Every other file, from sagas to redux files to helpers, should all go into the main root folder.
