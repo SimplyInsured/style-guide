@@ -39,6 +39,21 @@ The main category is the idea of `pages`.  Each page should represent a URL.  (T
 The CoverageOptionsPage.js routed to by /employer-application/coverage-options
 ```
 
+### Complex Pages
+
+When a page has too much functionality, having a single page file might not be sufficient to express all the features and functionalities available. For these cases instead of having a page file, use a page folder (with index file):
+```text
+|-- EmployerApplication
+|   |-- pages/
+|       |-- CoverageOptionsPage/
+|           |-- index.js
+|           |-- CoverageOptionsPage.js
+|           |-- ComponentX.js
+|           |-- ComponentY.js
+
+ComponentX and ComponentY should be only used by CoverageOptionsPage.js (they cannot be imported by components outside the CoverageOptionsPage folder)
+```
+
 **Tips**
 
 - Pages are the start of your visual components.
@@ -79,6 +94,55 @@ The secondary category is `components`.  These are generally visual components s
 |   |-- components/
 |       |-- ApplicationMenu.js
 |       |-- QuoteInformationPanel.js
+```
+**Component Guidelines**
+- A component shouldn't 'know' where it is being used. If some logic needs to be triggered when the component is in a given page, invert the control to the parent, and let the parent define what needs to happen:
+```javascript
+// Bad
+const MyComponent = ({ location }) => {
+  const onClick = () => {
+    // ... do something
+    if (location == 'pageA') {
+      Analityics.track('pageA_usage_of_my_component')
+    }
+  };
+  // ...
+};
+
+// Good
+const MyComponent = ({ onClickCallback }) => {
+  const onClick = () => {
+    // ... do something
+    if (typeof onClickCallback === 'Function') {
+      onClickCallback();
+    }
+  };
+  // ...
+};
+```
+- When possible avoid loading data as part of the component setup. Let the parent page be responsible for managing the loading state:
+```javascript
+// Bad
+const MyComponent = () => {
+  const { data, isLoading } = useMyRtkHook();
+  return isLoading ? <Loading /> : (
+    // my component code
+  );
+};
+
+// Good
+const MyComponent = ({ data }) => (
+  // my component code
+);
+// .. and inside the Page file:
+const MyPage = () => {
+  const { data, isLoading } = useMyRtkHook();
+
+  return (
+    // ... page stuff
+    { isLoading ? <Loading /> : <MyComponent data={data} /> }
+  );
+}
 ```
 
 **Tips**
